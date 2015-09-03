@@ -7,7 +7,7 @@ local function operator_prototype (operators, execute)
     local operands = {}
     local rest = {}
     return function (...)
-        print('operands', unpack (operands))
+        print('operands', unpack (operands))  -- debug
         if hungry then
             for i, v in ipairs({...}) do
                 if v == sentinel then
@@ -16,9 +16,6 @@ local function operator_prototype (operators, execute)
                     if hungry then table.insert (operands, v) else table.insert (rest, v) end
                 end
             end
-            -- debug
-            -- for i, v in ipairs (operands) do print(i, v) end
-            -- debug
             if not hungry then
                 table.remove (operators)
                 local output = {execute (operands)}
