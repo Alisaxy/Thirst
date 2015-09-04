@@ -3,25 +3,19 @@ local sentinel = {}
 local function exit (...) print('result', ...) print('exit') end
 
 local function operator_prototype (operators, execute)
-    local hungry = true
     local operands = {}
     local rest = {}
+    local stack = operands
     return function (...)
         print('operands', unpack (operands))  -- debug
-        if hungry then
-            for i, v in ipairs({...}) do
-                if v == sentinel then
-                    hungry = false
-                else
-                    if hungry then table.insert (operands, v) else table.insert (rest, v) end
-                end
-            end
-            if not hungry then
-                table.remove (operators)
-                local output = {execute (operands)}
-                for i, v in ipairs (rest) do table.insert (output, v) end
-                operators[#operators] (unpack (output))
-            end
+        for i, v in ipairs({...}) do
+            if v == sentinel then stack = rest else table.insert (stack, v) end
+        end
+        if stack == rest then
+            table.remove (operators)
+            local output = {execute (operands)}
+            for i, v in ipairs (rest) do table.insert (output, v) end
+            operators[#operators] (unpack (output))
         end
     end
 end
@@ -44,3 +38,14 @@ operators[#operators] (5, 6)
 table.insert (operators, operator_prototype (operators, sub))
 operators[#operators] (2, 3, sentinel)
 operators[#operators] (sentinel, 7, 8)
+
+-- local function test(b)
+--     if b then goto left else goto right end
+--     ::left:: do
+--         return print('left') end
+--     ::right:: do
+--         return print('right') end
+-- end
+
+-- test(true)
+-- test()
