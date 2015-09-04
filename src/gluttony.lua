@@ -7,14 +7,18 @@ local function operator_prototype (operators, execute)
     local rest = {}
     local stack = operands
     return function (...)
-        print('operands', unpack (operands))  -- debug
-        for i, v in ipairs({...}) do
-            if v == sentinel then stack = rest else table.insert (stack, v) end
+        local args = {...}
+        local _
+        while (function () _ =
+            table.remove(args, 1)
+            return not (_ == nil or _ == sentinel) end)()
+        do
+            table.insert (operands, _)
         end
-        if stack == rest then
+        if _ == sentinel then
             table.remove (operators)
             local output = {execute (operands)}
-            for i, v in ipairs (rest) do table.insert (output, v) end
+            for i, v in ipairs (args) do table.insert (output, v) end
             operators[#operators] (unpack (output))
         end
     end
