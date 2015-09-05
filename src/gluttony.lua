@@ -1,11 +1,10 @@
 local sentinel = {}
 
-local function exit (...) print('result', ...) print('exit') end
+local function exit (args) print('result', unpack (args)) print('exit') end
 
 local function operator_prototype (operators, execute)
     local operands = {}
-    return function (...)
-        local args = {...}
+    return function (args)
         local _
         while (function () _ =
             table.remove (args, 1)
@@ -24,17 +23,24 @@ end
 
 function processor_prototype ()
     local operators = { exit }
-    return { operator = function (op) table.insert (operators, operator_prototype (operators, op)) end,
-             operand = function (...)
-                local _ = operators[#operators] (...)
+    local handle_operator = function (op) table.insert (operators, operator_prototype (operators, op)) end
+    local handle_operand = function (...)
+                local _ = operators[#operators] ({...})
                 while _ ~= nil do _ = operators[#operators] (unpack (_)) end
-             end }
+             end
+    local process = function (...)
+        for i, v in ipairs ({...}) do
+            if type(v) == 'function' then handle_operator (v) else handle_operand (v) end
+            if operators[#operators] == exit then return handle_operator (select (i, ...)) end
+        end
+    end
+    return process
 end
 
 local function combinator_prototype (op, result)
     return function (operands)
         for i, v in ipairs (operands) do result = op (result, v) end
-        return result
+        return { result }
     end
 end
 
@@ -46,18 +52,16 @@ loop = function (operands, operators)
     local idx = operands[1]
     local limit = operands[2]
     local step = operands[3]
-    print('loop', unpack(operands))
-    if idx < limit then table.insert(operators, operator_prototype (operators, loop)) return idx + step, limit, step, sentinel
-    else return 777 end
+    print ('loop', unpack (operands))
+    if idx < limit then table.insert (operators, operator_prototype (operators, loop)) return {idx + step, limit, step, sentinel}
+    else return { 777 } end
+end
+
+local function quote_prototype ()
+    local quote = function (operands) return { operands } end
+    quote.suspend = true
+    return quote
 end
 
 local app = processor_prototype ()
-app.operator (add)
-app.operand (1, 2)
-app.operand (3, 4)
-app.operand (5, 6)
-app.operator (sub)
-app.operand (2, 3, sentinel)
-app.operator (loop)
-app.operand (0, 10, 2, sentinel)
-app.operand (sentinel, 7, 8)
+app (add, 1, 2, 3, 4, 5, 6, sub, 2, 3, sentinel, loop, 0, 10, 2, sentinel, sentinel, 7, 8)
