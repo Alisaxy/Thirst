@@ -1,7 +1,7 @@
 local sentinel = {}
 local void = {}
 
-local function exit (...) print('result', ...) print('exit') end
+local function exit (...) print ('result', ...) print ('exit') end
 
 local function operator_prototype (operators, execute)
     local operands = {}
@@ -54,8 +54,8 @@ loop = function (operands, operators)
     local idx = operands[1]
     local limit = operands[2]
     local step = operands[3]
-    print('loop', unpack(operands))
-    if idx < limit then table.insert(operators, operator_prototype (operators, loop)) return idx + step, limit, step, sentinel
+    print('loop', unpack (operands))
+    if idx < limit then table.insert (operators, operator_prototype (operators, loop)) return idx + step, limit, step, sentinel
     else return void end
 end
 
