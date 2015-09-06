@@ -1,24 +1,29 @@
 local sentinel = {}
 local end_program = {}
+local end_quote = {}
 
 local function exit (operands) print ('result', unpack (operands)) print ('exit') end
-local function quote (operands) return { operands } end
+local function quote (operands) return operands end
 
 local function operator_prototype (operators, execute)
     local delimiter = sentinel
-    if execute == exit then delimiter = end_program end
+    if execute == exit then delimiter = end_program end  -- a special end_program delimiter is required to exit the program
     local operands = {}
     local handle_operands = function (_) table.insert (operands, _) end
     local handle_operators = function (_) table.insert (operators, operator_prototype (operators, _)) end
-    if execute == quote then handle_operators = handle_operands end  -- suspend execution of quoted
+    if execute == quote then
+        delimiter = end_quote
+        handle_operators = handle_operands
+    end  -- suspend execution of quoted
     return function (...)
+        -- if (execute == eval_quotes) then print ('!') end
         local args = {...}
         local _
         while (function () _ =
             table.remove (args, 1)
             return not (_ == nil or _ == delimiter) end) ()
         do
-            if type (_) == 'function' then handle_operators (_) return else handle_operands (_) end
+            if type (_) == 'function' then handle_operators (_) else handle_operands (_) end
         end
         if _ == delimiter then
             table.remove (operators)
@@ -42,10 +47,16 @@ function processor_prototype ()
     return function (...) eval ({...}, operators) end
 end
 
+function eval_quotes (operands, operators)
+    print ('eval', unpack (operands))
+    for i, v in ipairs (operands) do eval (v, operators) end
+end
+
 local function combinator_prototype (op)
     return function (operands)
+        -- print ('operands', unpack (operands))
         local _ = table.remove (operands, 1)
-        for i, v in ipairs (operands) do _ = op (_, v) end
+        for i, v in ipairs (operands) do if type(v) == 'table' then print ('table', unpack (v)) end _ = op (_, v) end
         return _
     end
 end
@@ -63,7 +74,9 @@ loop = function (operands, operators)
 end
 
 local app = processor_prototype ()
-app (add, 1, 2, 3, 4, 5, 6, sub, 2, 3, sentinel, loop, 0, 10, 2, sentinel, sentinel, 7, 8, sentinel, sentinel, quote, add, 1, 2, 3, sentinel, end_program)
+app (add, 1, 2, 3, 4, 5, 6, eval_quotes, 
+    quote, add, 1, 2, 3, sentinel, end_quote, quote, add, 1, 2, 3, sentinel, end_quote,
+sentinel, sub, 2, 3, sentinel, loop, 0, 10, 2, sentinel, sentinel, 7, 8, sentinel, sentinel, end_program)
 -- app (1, 2)
 -- app (3, 4)
 -- app (5, 6)
