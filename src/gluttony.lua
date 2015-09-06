@@ -1,5 +1,4 @@
 local sentinel = {}
-local void = {}
 
 local function exit (...) print ('result', ...) print ('exit') end
 
@@ -10,7 +9,7 @@ local function operator_prototype (operators, execute)
         local _
         while (function () _ =
             table.remove (args, 1)
-            return not (_ == nil or _ == void or _ == sentinel) end) ()
+            return not (_ == nil or _ == sentinel) end) ()
         do
             table.insert (operands, _)
         end
@@ -55,8 +54,7 @@ loop = function (operands, operators)
     local limit = operands[2]
     local step = operands[3]
     print('loop', unpack (operands))
-    if idx < limit then table.insert (operators, operator_prototype (operators, loop)) return idx + step, limit, step, sentinel
-    else return void end
+    if idx < limit then table.insert (operators, operator_prototype (operators, loop)) return idx + step, limit, step, sentinel end
 end
 
 local app = processor_prototype ()
