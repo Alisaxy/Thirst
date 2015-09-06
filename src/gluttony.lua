@@ -64,7 +64,6 @@ function processor_prototype ()
 end
 
 function eval_quotes (operands, operators)
-    print ('eval', unpack (operands))
     for i, v in ipairs (operands) do eval (v, operators) end
 end
 
@@ -95,7 +94,7 @@ local app = processor_prototype ()
 --     quote, add, 1, 2, 3, add, 1, 2, 3, sentinel, sentinel, quote, add, 1, 2, 3, sentinel, sentinel, sentinel,
 -- sentinel, sub, 2, 3, sentinel, loop, 0, 10, 2, sentinel, sentinel, 7, 8, sentinel, sentinel, end_program)
 
-app (eval_quotes, quote, div, 1, 2, 3, add, 4, 5, 6, sentinel, sentinel, sentinel, sentinel, end_program)
+app (add, eval_quotes, quote, div, 1, 2, 3, add, 4, 5, 6, sentinel, sentinel, sentinel, quote, div, 1, 2, 3, add, 4, 5, 6, sentinel, sentinel, sentinel, sentinel, sentinel, end_program)
 
 -- app (1, 2)
 -- app (3, 4)
