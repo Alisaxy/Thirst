@@ -89,17 +89,4 @@ loop = function (operands, operators)
 end
 
 local app = processor_prototype ()
--- app (add, 1, 2, 3, 4, 5, 6, eval_quotes, 
---     quote, add, 1, 2, 3, add, 1, 2, 3, sentinel, sentinel, quote, add, 1, 2, 3, sentinel, sentinel, sentinel,
--- sentinel, sub, 2, 3, sentinel, loop, 0, 10, 2, sentinel, sentinel, 7, 8, sentinel, sentinel, end_program)
-
 app (add, eval_quotes, quote, div, 1, 2, 3, add, 4, 5, 6, sentinel, sentinel, sentinel, quote, div, 1, 2, 3, add, 4, 5, 6, sentinel, sentinel, sentinel, sentinel, sentinel, end_program)
-
--- app (1, 2)
--- app (3, 4)
--- app (5, 6)
--- app (sub)
--- app (2, 3, sentinel)
--- app (loop)
--- app (0, 10, 2, sentinel)
--- app (sentinel, 7, 8, sentinel, sentinel)
