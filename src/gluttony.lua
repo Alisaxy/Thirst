@@ -1,6 +1,5 @@
 local sentinel = {}
 local end_program = {}
-local end_quote = {}
 
 local function exit (operands) print ('result', unpack (operands)) print ('exit') end
 local function quote (operands) return operands end
