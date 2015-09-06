@@ -8,29 +8,39 @@ local function quote (operands) return operands end
 local function operator_prototype (operators, execute)
     local delimit_counter = 1
     local delimiter = sentinel
-    if execute == exit then delimiter = end_program end  -- a special end_program delimiter is required to exit the program
     local operands = {}
+    
     local handle_operands = function (_) table.insert (operands, _) end
-    local handle_quoted_operands = function (_)
-        if _ == quote then delimit_counter = delimit_counter + 1 end
+    
+    local handle_quoted_operators = function (_)
+        delimit_counter = delimit_counter + 1
         handle_operands (_)
     end
     local handle_operators = function (_) table.insert (operators, operator_prototype (operators, _)) end
-    if execute == quote then
-        delimiter = end_quote
-        handle_operators = handle_quoted_operands
-    end  -- suspend execution of quoted
+    
+    local check_sequence = function (_) return not (_ == nil or _ == delimiter) end
+    local check_sequence_quoted = function (_) return _ ~= nil and delimit_counter > 0 end
+    
+    if execute == quote then -- suspend execution of quoted
+        check_sequence = check_sequence_quoted
+        handle_operators = handle_quoted_operators
+    elseif  -- a special end_program delimiter is required to exit the program
+        execute == exit then delimiter = end_program
+    end  
+    
     return function (...)
-        -- if (execute == eval_quotes) then print ('!') end
         local args = {...}
         local _
         while (function () _ =
             table.remove (args, 1)
-            return not (_ == nil or _ == delimiter) end) ()
+            if _ == delimiter then delimit_counter = delimit_counter - 1 end
+            return check_sequence (_) end) ()
         do
             if type (_) == 'function' then handle_operators (_) else handle_operands (_) end
         end
-        if _ == delimiter then delimit_counter = delimit_counter - 1 end
+        -- debug
+        -- print (delimit_counter)
+        -- debug
         if delimit_counter <= 0 then
             table.remove (operators)
             local output = { execute (operands, operators) }
@@ -60,7 +70,6 @@ end
 
 local function combinator_prototype (op)
     return function (operands)
-        -- print ('operands', unpack (operands))
         local _ = table.remove (operands, 1)
         for i, v in ipairs (operands) do if type(v) == 'table' then print ('table', unpack (v)) end _ = op (_, v) end
         return _
@@ -69,6 +78,8 @@ end
 
 local add = combinator_prototype (function (x, y) return x + y end)
 local sub = combinator_prototype (function (x, y) return x - y end)
+local mul = combinator_prototype (function (x, y) return x * y end)
+local div = combinator_prototype (function (x, y) return x / y end)
 
 local loop
 loop = function (operands, operators)
@@ -80,9 +91,12 @@ loop = function (operands, operators)
 end
 
 local app = processor_prototype ()
-app (add, 1, 2, 3, 4, 5, 6, eval_quotes, 
-    quote, add, 1, 2, 3, add, 1, 2, 3, sentinel, end_quote, quote, add, 1, 2, 3, sentinel, sentinel, end_quote,
-sentinel, sub, 2, 3, sentinel, loop, 0, 10, 2, sentinel, sentinel, 7, 8, sentinel, sentinel, end_program)
+-- app (add, 1, 2, 3, 4, 5, 6, eval_quotes, 
+--     quote, add, 1, 2, 3, add, 1, 2, 3, sentinel, sentinel, quote, add, 1, 2, 3, sentinel, sentinel, sentinel,
+-- sentinel, sub, 2, 3, sentinel, loop, 0, 10, 2, sentinel, sentinel, 7, 8, sentinel, sentinel, end_program)
+
+app (eval_quotes, quote, div, 1, 2, 3, add, 4, 5, 6, sentinel, sentinel, sentinel, sentinel, end_program)
+
 -- app (1, 2)
 -- app (3, 4)
 -- app (5, 6)
