@@ -6,14 +6,19 @@ local function exit (operands) print ('result', unpack (operands)) print ('exit'
 local function quote (operands) return operands end
 
 local function operator_prototype (operators, execute)
+    local delimit_counter = 1
     local delimiter = sentinel
     if execute == exit then delimiter = end_program end  -- a special end_program delimiter is required to exit the program
     local operands = {}
     local handle_operands = function (_) table.insert (operands, _) end
+    local handle_quoted_operands = function (_)
+        if _ == quote then delimit_counter = delimit_counter + 1 end
+        handle_operands (_)
+    end
     local handle_operators = function (_) table.insert (operators, operator_prototype (operators, _)) end
     if execute == quote then
         delimiter = end_quote
-        handle_operators = handle_operands
+        handle_operators = handle_quoted_operands
     end  -- suspend execution of quoted
     return function (...)
         -- if (execute == eval_quotes) then print ('!') end
@@ -25,7 +30,8 @@ local function operator_prototype (operators, execute)
         do
             if type (_) == 'function' then handle_operators (_) else handle_operands (_) end
         end
-        if _ == delimiter then
+        if _ == delimiter then delimit_counter = delimit_counter - 1 end
+        if delimit_counter <= 0 then
             table.remove (operators)
             local output = { execute (operands, operators) }
             for i, v in ipairs (args) do table.insert (output, v) end
@@ -75,7 +81,7 @@ end
 
 local app = processor_prototype ()
 app (add, 1, 2, 3, 4, 5, 6, eval_quotes, 
-    quote, add, 1, 2, 3, sentinel, end_quote, quote, add, 1, 2, 3, sentinel, end_quote,
+    quote, add, 1, 2, 3, add, 1, 2, 3, sentinel, end_quote, quote, add, 1, 2, 3, sentinel, sentinel, end_quote,
 sentinel, sub, 2, 3, sentinel, loop, 0, 10, 2, sentinel, sentinel, 7, 8, sentinel, sentinel, end_program)
 -- app (1, 2)
 -- app (3, 4)
