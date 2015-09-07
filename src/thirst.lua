@@ -103,7 +103,7 @@ local fork = function (operands, operators)
     local predicate = operands[3]
     local evaluated
     if predicate then evaluated = left else evaluated = right end
-    return evaluated, sentinel
+    return evaluated, sentinel  -- evaluate right away
 end
 
 local app = processor_prototype ()
