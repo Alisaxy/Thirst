@@ -141,4 +141,4 @@ app2 (fork, quote, add, 1, 2, 3, sentinel, quote_sentinel, quote, sub, 1, 2, 3, 
 app3 = processor_prototype ()
 app3 (loop, 0, 10, 2, sentinel, exit)
 app4 = processor_prototype ()
-app4 (define, 'test', quote, 1, 2, 3, quote_sentinel, sentinel, eval_quotes, refer, 'test', sentinel, sentinel, exit)
+app4 (define, 'test', quote, add, 1, 2, 3, quote_sentinel, sentinel, eval_quotes, refer, 'test', sentinel, sentinel, 4, sentinel, exit)
