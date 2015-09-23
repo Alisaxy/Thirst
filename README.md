@@ -10,8 +10,8 @@ Syntax example (draft):
 *	/ is the data-like delimiter
 
 The biggest difference from other languages as of now is the fact that everything is data, which means everything.
-The most notable case is that the delimiters themselves are data to and can be freely passed to operators as operands.
-Delimiters serves a signals to the operators to consume its operand stack/list/vector and to return program control to
+The most notable case is that the delimiters themselves are data too and can be freely passed to operators as operands.
+Delimiters signal the operators to consume its operand list and to return control to
 the next operand in the chain, together with the result which is a variable list. Thirst is thus even more homoiconic than Lisp where the parentheses lose their meaning after being parsed, which is really a shame. Just as with any concatenative language
 everything is conceptually a function (implementations may differ for the sake of efficiency and simplicity).
 
