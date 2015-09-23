@@ -1,9 +1,11 @@
 # Thirst
 Thirst is a concatenative programming language that uses proper polish notation and is based on linked lists instead of stacks.
 
-As of this moment the interpreter is being prototyped in Lua. It is planned to be rewritten in Rust once the core is ready.
+Thirst was prototyped in lua which proved the concept and hence was abandoned in favor of a rewrite in a systems programming language. Rust was considered, but dropped because of very long development iteration cycles as compared to most other languages. A far more productive language was chosen and that language is Nim.
 
-##Finished:
+To compile and run build and install the nim compiler suite (should be on the system path), navigate to the source directory and run: nim compile -r main.nim
+
+##Finished (in the prototype):
 * most of the core
 * simple arithmetics a al Lisp
 * loops
@@ -13,6 +15,7 @@ As of this moment the interpreter is being prototyped in Lua. It is planned to b
 * some tail recursion, needs testing
 
 ##Todo:
+* rewrite everything done so far in Nim
 * rest of the core
 * proper recursion from the language itself
 * lists
