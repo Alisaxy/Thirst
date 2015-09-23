@@ -15,7 +15,7 @@ Delimiters signal the operators to consume its operand list and to return contro
 the next operand in the chain, together with the result which is a variable list. Thirst is thus even more homoiconic than Lisp where the parentheses lose their meaning after being parsed, which is really a shame. Just as with any concatenative language
 everything is conceptually a function (implementations may differ for the sake of efficiency and simplicity).
 
-To compile and run build and install the nim compiler suite (should be on the system path), navigate to the source directory and run: nim compile -r main.nim
+To compile and run build and install the nim compiler suite (should be on the system path), navigate to the source directory and run: nim compile -r main.nim. If on Windows run the compile_run.cmd from cmd or the compile_run_standalone.cmd from shell.
 
 ##Finished (in the prototype):
 * most of the core
