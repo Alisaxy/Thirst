@@ -4,11 +4,11 @@ Thirst is a concatenative programming language that uses proper polish notation 
 Thirst was prototyped in lua which proved the concept and hence was abandoned in favor of a rewrite in a systems programming language. Rust was considered, but dropped because of very long development iteration cycles as compared to most other languages. A far more productive language was chosen and that language is Nim.
 
 Syntax example (draft):
-	+ 1 2 3 * 10 3 / - 20 1 / ! [ ^ 2 3 ] / : 6 2 / /
-, where:
-	+|*|-|!|: are operators, respectively the summation, multiplication, substraction, evaluation and division
-	[ and ] are the special quote operator and its delimiter respectively
-	/ is the data-like delimiter
+*	+ 1 2 3 * 10 3 / - 20 1 / ! [ ^ 2 3 ] / : 6 2 / /
+*, where:
+*	+|*|-|!|: are operators, respectively the summation, multiplication, substraction, evaluation and division
+*	[ and ] are the special quote operator and its delimiter respectively
+*	/ is the data-like delimiter
 The biggest difference from other languages as of now is the fact that everything is data, which means everything.
 The most notable case is that the delimiters themselves are data to and can be freely passed to operators as operands.
 Delimiters serves a signals to the operators to consume its operand stack/list/vector and to return program control to
