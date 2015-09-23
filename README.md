@@ -9,6 +9,7 @@ Syntax example (draft):
 *	+|*|-|!|: are operators, respectively the summation, multiplication, substraction, evaluation and division
 *	[ and ] are the special quote operator and its delimiter respectively
 *	/ is the data-like delimiter
+
 The biggest difference from other languages as of now is the fact that everything is data, which means everything.
 The most notable case is that the delimiters themselves are data to and can be freely passed to operators as operands.
 Delimiters serves a signals to the operators to consume its operand stack/list/vector and to return program control to
