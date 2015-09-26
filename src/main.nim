@@ -36,7 +36,6 @@ operator.feed(888)
 operator.feed(999)
 operator.feed(0)  # sentinel
 # echo(operator.execute())
-
 # operator.operands.pop() /> option: echo(option.value)
 
 var test = 1000.0
