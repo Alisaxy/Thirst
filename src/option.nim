@@ -7,10 +7,8 @@ type
     of None: discard
     of Some:
       value: T
-proc New_Option*[T](): Option[T] =
-  result = Option[T](variant: None)
-proc New_Option*[T](value: T): Option[T] =
-  result = Option[T](variant: Some, value: value)
+proc New_Option*[T](): Option[T] = Option[T](variant: None)
+proc New_Option*[T](value: T): Option[T] = Option[T](variant: Some, value: value)
 template `/>`* (option, placeholder: expr, body: stmt): stmt {.immediate.} =
   block:
     var placeholder = option
