@@ -15,11 +15,12 @@ impl Operator {
     fn feed(&mut self, operand: Operand) {
         self.operands.push_back(operand);
     }
-    fn run<F: Fn(&Operand) -> Operand>(&mut self) {
+    fn run(&mut self) {
         let mut iter = self.operands.iter();
+        let ref runner = self.runner;
         loop {
                match iter.next() {
-                   Some(x) => { },
+                   Some(x) => { runner(x); },
                    None => { break; }
             }
         }
@@ -60,13 +61,5 @@ fn main() {
     op.feed(Operand::Number(777f64));
     op.feed(Operand::Symbol(String::from("hello")));
 
-    // op.run(|x: &Operand| -> Operand { 
-    //     match *x {
-    //         Operand::Number(y) => {
-    //             println!("{:?}", y);
-    //         },
-    //         _ => { println!("fail!"); }
-    //     }
-    //     Operand::Sentinel
-    // });
+    op.run();
 }
