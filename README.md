@@ -12,10 +12,9 @@ Syntax example (draft):
 The biggest difference from other languages as of now is the fact that everything is data, which means everything.
 The most notable case is that the delimiters themselves are data too and can be freely passed to operators as operands.
 Delimiters signal the operators to consume its operand list and to return control to
-the next operand in the chain, together with the result which is a variable list. Thirst is thus even more homoiconic than Lisp where the parentheses lose their meaning after being parsed, which is really a shame. Just as with any concatenative language
-everything is conceptually a function (implementations may differ for the sake of efficiency and simplicity).
+the next operand in the chain, together with the result which is a variable list. Thirst is thus even more homoiconic than Lisp where the parentheses lose their meaning after being parsed, which is really a shame. Just as with any concatenative language everything is conceptually a function (implementations may differ for the sake of efficiency and simplicity).
 
-To compile and run build and install the nim compiler suite (should be on the system path), navigate to the source directory and run: nim compile -r main.nim. If on Windows run the compile_run.cmd from cmd or the compile_run_standalone.cmd from shell.
+To compile and run: build and install the Rust compiler suite (should be on the system path), navigate to the source directory and run: rustc main.rs. If on Windows run the compile_run.cmd from console.
 
 ##Finished (in the prototype):
 * most of the core
