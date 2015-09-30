@@ -27,16 +27,16 @@ To compile and run build and install the nim compiler suite (should be on the sy
 * some tail recursion, needs testing
 
 ##Todo:
-* rewrite everything done so far in Nim
+* rewrite everything done so far in Rust and continue on with it
+* write an ordering primitive for arbitrary operand reordeing
 * rest of the core
 * proper recursion from the language itself
 * lists
 * hash-maps
 * string evaluator
 * implement a pool hash-map per application and access restrictions on functions a la persistent databases only in memory to do away with the traditional scoping rules
-* make powerful profiling and debugging tools
-* port to a proper systems language such as Rust
 * make embeddable
+* make powerful profiling and debugging tools
 * implement a bytecode VM
 * test everything thoroughly
 * write the all encompassing language reference and an extensive documentation
