@@ -2,11 +2,12 @@ use std::collections::LinkedList;
 
 struct Operator {
     operators: LinkedList<Operator>,
-    operands: LinkedList<Operand>,
-    runner: Box<Fn(&Operand) -> Operand>
+    operands: LinkedList<Operand>,  // should be used as "return" to the next operator in line
+    runner: Box<Fn(&Operand) -> Operand>  // should work on the stack directly, instead of on per operand basis
+                                          // in which case should receive &mut self and return nothing
 }
 
-impl Operator {
+impl Operator { // make "Incremental Operator" type with all of the same traits for convenience
     fn new(runner: Box<Fn(&Operand) -> Operand>) -> Operator { 
         Operator { operators: LinkedList::new(),
                    operands: LinkedList::new(),
