@@ -1,4 +1,5 @@
 # Thirst
+!!! WARNING !!! This project is frozen until I can get some free time to work on it. I'm terribly busy now a days.
 Thirst is a concatenative programming language that uses proper polish notation and is based on linked lists instead of stacks.
 
 Thirst was prototyped in lua which proved the concept and hence was abandoned in favor of a rewrite in a systems programming language. Rust was considered, but dropped because of very long development iteration cycles as compared to most other languages. A far more productive language was chosen and that language is Nim... After which it was ditched again for Rust, because of the immaturity of the infrastructure with the compiler unable to parse simple code correctly. At least Rust has corporate backing, Nim doesn't, enough said.
